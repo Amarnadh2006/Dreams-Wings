@@ -1,0 +1,227 @@
+[
+  {
+    "flight": {
+      "id": 1,
+      "from": "Delhi",
+      "to": "Mumbai",
+      "date": "2025-12-20",
+      "price": 4000
+    },
+    "seat": "5",
+    "adults": "2",
+    "children": "2",
+    "tickets": "4",
+    "total": 16000
+  },
+  {
+    "flight": {
+      "id": 1,
+      "from": "Delhi",
+      "to": "Mumbai",
+      "date": "2025-12-20",
+      "price": 4000
+    },
+    "seat": "5",
+    "adults": "3",
+    "children": "4",
+    "tickets": "3",
+    "total": 12000
+  },
+  {
+    "flight": {
+      "id": 1,
+      "from": "Delhi",
+      "to": "Mumbai",
+      "date": "2025-12-20",
+      "price": 4000
+    },
+    "seat": "7",
+    "adults": "1",
+    "children": "0",
+    "tickets": "1",
+    "total": 4000
+  },
+  {
+    "flight": {
+      "id": 9,
+      "airline": "Emirates",
+      "from": "Delhi",
+      "to": "Dubai",
+      "date": "2025-11-17",
+      "price": 15300
+    },
+    "seats": [
+      "1A",
+      "2B",
+      "3C"
+    ],
+    "adults": "2",
+    "children": "1",
+    "tickets": "3",
+    "total": 45900
+  },
+  {
+    "id": 1763917037654,
+    "flightId": 1,
+    "name": "Test User",
+    "email": "test@example.com",
+    "flight": {
+      "id": 1,
+      "airline": "IndiGo",
+      "from": "Delhi",
+      "to": "Mumbai",
+      "date": "2025-11-09",
+      "price": 4520
+    },
+    "seats": [
+      "2A",
+      "2B"
+    ],
+    "passengers": [
+      {
+        "name": "Test User",
+        "type": "adult"
+      }
+    ]
+  },
+  {
+    "id": 1763918040975,
+    "flightId": 2,
+    "name": "pranav",
+    "email": "pranav@gmail.com",
+    "flight": {
+      "id": 2,
+      "airline": "Air India",
+      "from": "Delhi",
+      "to": "Bangalore",
+      "date": "2025-11-10",
+      "price": 4780
+    },
+    "seats": [
+      "3C"
+    ],
+    "passengers": [
+      {
+        "name": "pranav",
+        "email": "pranav@gmail.com",
+        "phone": "7894561235",
+        "passport": "8564",
+        "country": "india",
+        "type": "adult",
+        "age": "19"
+      }
+    ]
+  },
+  {
+    "id": 1763918042175,
+    "flightId": 2,
+    "name": "pranav",
+    "email": "pranav@gmail.com",
+    "flight": {
+      "id": 2,
+      "airline": "Air India",
+      "from": "Delhi",
+      "to": "Bangalore",
+      "date": "2025-11-10",
+      "price": 4780
+    },
+    "seats": [
+      "3C"
+    ],
+    "passengers": [
+      {
+        "name": "pranav",
+        "email": "pranav@gmail.com",
+        "phone": "7894561235",
+        "passport": "8564",
+        "country": "india",
+        "type": "adult",
+        "age": "19"
+      }
+    ]
+  },
+  {
+    "id": 1763918181766,
+    "flightId": 2,
+    "name": "pranav",
+    "email": "pranav@gmail.com",
+    "flight": {
+      "id": 2,
+      "airline": "Air India",
+      "from": "Delhi",
+      "to": "Bangalore",
+      "date": "2025-11-10",
+      "price": 4780
+    },
+    "seats": [
+      "3F"
+    ],
+    "passengers": [
+      {
+        "name": "pranav",
+        "email": "pranav@gmail.com",
+        "phone": "7894561230",
+        "passport": "5684",
+        "country": "india",
+        "type": "adult",
+        "age": "19"
+      }
+    ]
+  },
+  {
+    "id": 1763918881887,
+    "flightId": 2,
+    "name": "pranav",
+    "email": "pranav@gmail.com",
+    "flight": {
+      "id": 2,
+      "airline": "Air India",
+      "from": "Delhi",
+      "to": "Bangalore",
+      "date": "2025-11-10",
+      "price": 4780
+    },
+    "seats": [
+      "4C"
+    ],
+    "passengers": [
+      {
+        "name": "pranav",
+        "email": "pranav@gmail.com",
+        "phone": "7894561230",
+        "passport": "56842",
+        "country": "india",
+        "type": "adult",
+        "age": "19"
+      }
+    ]
+  },
+  {
+    "id": 1763919236093,
+    "flightId": 2,
+    "name": "pranav",
+    "email": "pranav@gmail.com",
+    "flight": {
+      "id": 2,
+      "airline": "Air India",
+      "from": "Delhi",
+      "to": "Bangalore",
+      "date": "2025-11-10",
+      "price": 4780
+    },
+    "seats": [
+      "2G"
+    ],
+    "passengers": [
+      {
+        "name": "pranav",
+        "email": "pranav@gmail.com",
+        "phone": "7894561235",
+        "passport": "58642",
+        "country": "india",
+        "type": "adult",
+        "age": "19"
+      }
+    ]
+  }
+]

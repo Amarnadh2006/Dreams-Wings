@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DreamWings Flight Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="script.js"></script>
+  <!-- LEAFLET STYLES & SCRIPT (Put both lines in <head> at top!) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+<body>
+  <button id="toggle-dark" style="position:fixed;top:16px;right:16px;z-index:10020;">🌙/☀️</button>
+
+  <!-- Animated Video Intro Overlay -->
+  <div id="video-intro">
+    <video id="intro-video" autoplay muted playsinline preload="auto"
+      style="object-fit:cover;width:100vw;height:100vh;top:0;left:0;z-index:1;background:#111;">
+      <source src="generated-video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-vibrant-bg"></div>
+    <div class="video-gradient"></div>
+    <div class="intro-title-wrap">
+      <h1 class="intro-title-flip" style="color:#17171a;">DreamWings</h1>
+    </div>
+  </div>
+  
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="modal" style="display:none;">
+    <div id="auth-modal-content" class="modal-content"></div>
+  </div>
+  <!-- Profile Modal/Section -->
+  <!-- =========================================
+     PROFILE SECTION
+========================================= -->
+
+<div
+    id="profile-section"
+    class="booking-step hidden"
+    style="display:none;"
+>
+
+    <!-- Profile Title -->
+
+    <h2>
+        User Profile
+    </h2>
+
+
+    <!-- User Details -->
+
+    <div
+        class="profile-details"
+        id="profile-details"
+    ></div>
+
+
+    <!-- Profile Picture -->
+
+    <div class="profile-avatar-section">
+
+        <label for="avatar-input">
+            Profile Picture
+        </label>
+
+        <input
+            type="file"
+            id="avatar-input"
+            accept="image/*"
+        />
+
+    </div>
+
+
+    <!-- Profile Buttons -->
+
+    <div class="profile-buttons">
+
+        <button
+            id="logout-btn"
+            class="main-btn"
+            type="button"
+        >
+            Logout
+        </button>
+
+
+        <button
+            id="start-booking-btn"
+            class="main-btn"
+            type="button"
+        >
+            Start Booking
+        </button>
+
+    </div>
+
+
+    <!-- =====================================
+         MY BOOKINGS
+    ====================================== -->
+
+    <div
+        id="history-section"
+        class="history-section"
+    >
+
+        <h2 class="history-title">
+            My Bookings
+        </h2>
+
+
+        <!-- Booking cards will appear here -->
+
+        <div
+            id="booking-history-list"
+            class="booking-history-list"
+        >
+
+            <div class="no-bookings">
+                ✈️ No bookings found.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  <!-- Admin Dashboard Modal/Section -->
+  <div id="admin-dashboard" class="booking-step hidden" style="display:none;">
+    <h2>Admin Dashboard</h2>
+    <div id="admin-bookings"></div>
+    <button class="main-btn" onclick="closeAdmin()">Close Admin</button>
+  </div>
+
+ <!-- NAVBAR -->
+<nav class="navbar">
+
+    <!-- LOGO -->
+    <div class="nav-logo">
+        DreamWings
+    </div>
+
+    <!-- NAVIGATION LINKS -->
+    <ul class="nav-links">
+
+        <!-- Flights -->
+        <li>
+            <a href="#" id="nav-flights">
+                Flights
+            </a>
+        </li>
+
+        <!-- Explore -->
+        <li>
+            <a href="#" id="nav-bookings">
+                Explore
+            </a>
+        </li>
+
+        <!-- Team -->
+        <li>
+            <a href="#team-section">
+                Team
+            </a>
+        </li>
+        <li class="notification-container">
+
+            <button
+                class="notification-btn"
+                id="notification-btn"
+                type="button"
+                aria-label="Notifications">
+
+                🔔
+
+                <span id="notification-count">
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- Notification Dropdown -->
+            <div
+                class="notification-panel"
+                id="notification-panel">
+
+
+                <!-- Header -->
+                <div class="notification-header">
+
+                    <h3>
+                        Notifications
+                    </h3>
+
+                    <button
+                        type="button"
+                        id="clear-notifications">
+
+                        Clear All
+
+                    </button>
+
+                </div>
+
+
+                <!-- Notifications -->
+                <div id="notification-list">
+
+                    <div class="no-notifications">
+
+                        🔔 No new notifications
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </li>
+
+
+        <!-- Profile -->
+        <li>
+
+            <button
+                class="login-btn"
+                id="profile-show-btn">
+
+                Profile
+
+            </button>
+
+        </li>
+
+
+        <!-- Admin -->
+        <li>
+
+            <button
+                class="login-btn"
+                id="admin-btn"
+                style="display: none;">
+
+                Admin
+
+            </button>
+
+        </li>
+
+    </ul>
+
+</nav>
+
+  <!-- Promo Code Area -->
+  <div style="text-align:center;margin-bottom:7px;">
+    <input type="text" id="promo-code" placeholder="Promo Code" style="padding:7px 16px;border-radius:7px;border:1.2px solid #aaa;margin-top:4px;" />
+    <button onclick="applyPromo()" class="main-btn" style="font-size:0.9em;padding:7px 18px;margin-left:7px;margin-bottom:7px;">Apply</button>
+    <span id="promo-status" style="color:#247841;font-size:.99em;margin-left:9px;"></span>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progressbar" id="progressbar">
+    <div class="step step-search active">Search</div>
+    <div class="step step-seats">Seats</div>
+    <div class="step step-passenger">Passenger</div>
+    <div class="step step-bill">Bill</div>
+    <div class="step step-payment">Payment</div>
+    <div class="step step-thank">Thank You</div>
+    <div class="step step-explore">Explore</div>
+    <div class="step step-team">Team</div>
+  </div>
+
+  <!-- Main Content Sections -->
+  <div id="main-content" style="display:none;">
+    <div class="center-wrap">
+      <!-- Search Flights -->
+      <div id="search-section" class="booking-step shown">
+        <h1>Book Your Flight</h1>
+        <form id="searchForm">
+          <div class="input-row">
+            <label>From:
+              <input name="from" id="fromInput" list="airports" required class="input" />
+              <datalist id="airports">
+                <option value="Delhi"><option value="Mumbai"><option value="London"><option value="Dubai">
+                <option value="New York"><option value="Sydney"><option value="Singapore"><option value="Tokyo">
+                <option value="Paris"><option value="Frankfurt"><option value="Istanbul"><option value="Bangkok">
+              </datalist>
+            </label>
+            <label>To: <input name="to" id="toInput" list="airports" required class="input" /></label>
+            <label>Date: <input type="date" name="date" required class="input" /></label>
+            <button type="submit" class="main-btn">Search</button>
+          </div>
+        </form>
+        <div id="flight-results"></div>
+      </div>
+      <!-- Seat Selection -->
+      <div id="seat-section" class="booking-step hidden">
+        <h2>Select Your Seats</h2>
+        <div class="seat-legend" style="display:flex;gap:22px;justify-content:center;margin-bottom:12px;">
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="seat-icon seat-first" style="width:19px;height:19px;"></span> First
+          </span>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="seat-icon seat-business" style="width:19px;height:19px;"></span> Business
+          </span>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="seat-icon seat-economy" style="width:19px;height:19px;"></span> Economy
+          </span>
+        </div>
+        <div class="plane-seatmap-flex">
+          <div class="plane-seatmap-wrap" style="position:relative;min-height:380px;">
+            <div id="seatMap" style="position:relative;min-height:340px;"></div>
+          </div>
+        </div>
+        <form id="seatForm" autocomplete="off" style="text-align:center; margin-top:24px;">
+          <input type="hidden" name="seats" id="selectedSeatsInput" required />
+          <div id="seatSelectionInfo" class="seat-selection-info-fixed"></div>
+          <button type="submit" class="main-btn seat-next-btn" id="seat-next-btn">Next</button>
+        </form>
+      </div>
+      <!-- Passenger Details -->
+      <div id="passenger-section" class="booking-step hidden">
+        <h2>Passenger Details</h2>
+        <form id="passengerForm" autocomplete="off">
+          <button type="submit" class="main-btn" style="margin-top:16px;">Proceed to Bill</button>
+        </form>
+      </div>
+      <!-- Bill -->
+      <div id="bill-section" class="booking-step hidden">
+        <h2>Your Bill</h2>
+        <div id="bill-details"></div>
+        <button id="confirmBooking" class="main-btn">Confirm Booking</button>
+      </div>
+      <!-- Payment -->
+      <div id="payment-section" class="booking-step hidden">
+        <h2>Payment <span style="font-size:1.2em">🔒</span></h2>
+        <div class="payment-tabs">
+          <button type="button" class="tab-btn active" id="tab-card">Credit/Debit Card</button>
+          <button type="button" class="tab-btn" id="tab-upi">UPI</button>
+        </div>
+        <div class="payment-container">
+          <!-- Card preview and form (hide as one unit on UPI) -->
+          <div id="card-details-wrap">
+            <div id="card-3d-container">
+              <div class="credit-card-3d" id="credit-card-3d">
+                <div class="card-face card-face-front">
+                  <div class="card-bg-glow"></div>
+                  <div class="card-logo" id="cc-brand">
+                    <img src="" id="cc-logo-img" style="height:24px;" />
+                    <span id="cc-brand-name"></span>
+                  </div>
+                  <div class="card-chip"></div>
+                  <div class="card-num" id="cc-num">•••• •••• •••• ••••</div>
+                  <div class="card-exp-label">EXP</div>
+                  <div class="card-exp" id="cc-exp">••/••</div>
+                  <div class="card-name" id="cc-name">NAME</div>
+                </div>
+                <div class="card-face card-face-back">
+                  <div class="card-strip"></div>
+                  <div class="card-cvv-label">CVV</div>
+                  <div class="card-cvv" id="cc-cvv">•••</div>
+                </div>
+              </div>
+            </div>
+            <form id="pay-card" class="pay-form">
+              <label>Card Number
+                <input type="text" maxlength="19" id="card-number" required autocomplete="cc-number" placeholder="1234 5678 9012 3456">
+                <span class="cc-logo" id="card-logo"></span>
+              </label>
+              <label>Name on Card
+                <input type="text" id="card-name-input" required autocomplete="cc-name" placeholder="Name as on card">
+              </label>
+              <div style="display:flex;gap:14px;">
+                <label style="flex:1;">Expiry
+                  <input type="text" id="card-exp" maxlength="5" required placeholder="MM/YY" autocomplete="cc-exp">
+                </label>
+                <label style="flex:1;">CVV
+                  <input type="password" id="card-cvv" maxlength="4" required placeholder="123" autocomplete="cc-csc">
+                </label>
+              </div>
+              <button type="submit" class="main-btn" id="pay-btn">Pay & Confirm</button>
+              <div id="card-error" style="color:#e74c3c;text-align:center;margin-top:6px;"></div>
+            </form>
+          </div>
+          <!-- UPI Form (standalone, no card preview) -->
+          <form id="pay-upi" class="pay-form" style="display:none">
+            <div id="upi-choice-screen">
+              <label style="width:100%;">Select UPI App</label>
+              <div class="upi-symbols">
+                <button type="button" class="upi-symbol-btn" data-app="Paytm" title="Paytm">₹</button>
+                <button type="button" class="upi-symbol-btn" data-app="PhonePe" title="PhonePe">🟪</button>
+                <button type="button" class="upi-symbol-btn" data-app="Google Pay" title="Google Pay">🟦</button>
+                <button type="button" class="upi-symbol-btn" data-app="BHIM" title="BHIM">▲</button>
+              </div>
+            </div>
+            <div id="upi-id-screen" style="display:none;">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+                <span id="upi-app-symbol" class="upi-symbol-btn selected" style="font-size:2.6em;"></span>
+                <span id="upi-app-label" style="font-size:1.2em;font-weight:600;"></span>
+              </div>
+              <label>Enter your UPI ID
+                <input type="text" id="upi-id" required placeholder="yourname@upi">
+              </label>
+              <div style="display:flex;gap:14px;margin-top:8px;">
+                <button type="button" class="main-btn" id="upi-back-btn" style="width:44%;">Change App</button>
+                <button type="submit" class="main-btn" id="upi-pay-btn" style="width:53%;">Pay with UPI</button>
+              </div>
+              <div id="upi-error" style="color:#e74c3c;text-align:center;margin-top:7px;"></div>
+            </div>
+          </form>
+          <div class="payment-recap" id="payment-recap" style="display:none"></div>
+        </div>
+        <div id="pay-success" style="display:none;text-align:center;margin:38px auto;">
+          <div style="font-size:3em;">✅</div>
+          <h3>Payment Successful!</h3>
+          <p>Your ticket is confirmed. Thank you for booking with DreamWings!</p>
+          <!-- Ticket Download Button -->
+          <button class="main-btn" style="margin-left:18px;" onclick="showStep(5)">Finish</button>
+        </div>
+      </div>
+      <!-- Thank You Section -->
+      <div id="thank-section" class="booking-step hidden">
+        <h1 class="thank-banner">Thank You for Booking!</h1>
+        <svg width="300" height="110">
+          <ellipse cx="150" cy="85" rx="82" ry="22" fill="#e6f5ff" />
+          <image href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/8b77c60a-d326-4edc-98a5-c1e0a38dd15e.png" x="120" y="34" width="62" height="62" />
+        </svg>
+        <h2 class="thank-message">Happy Journey and Safe Travels with DreamWings! 🌏✈️</h2>
+        <button class="main-btn" onclick="showStep(0)">Book Another Flight</button>
+      </div>
+      <!-- Explore Flight Routes Map -->
+      <!-- EXPLORE SECTION (with MAP) -->
+<div id="explore-section" class="booking-step hidden">
+  <h2>Explore Flight Routes</h2>
+  <div id="map" style="width: 100%; max-width:720px; height:420px; margin: 0 auto 18px auto; border-radius:19px; box-shadow:0 8px 38px #13b2f718;"></div>
+  <div style="text-align:center; margin:16px 0 0 0;">
+    Click two cities to see a sample flight route.
+  </div>
+  <button class="main-btn" onclick="showStep(0)">Back to Booking</button>
+</div>
+
+      <!-- TEAM SECTION (AUTO-CAROUSEL + DETAIL MODE) -->
+      <div id="team-section" class="booking-step hidden">
+        <h2 class="team-section-heading">Our Team</h2>
+        <div class="team-carousel-outer">
+          <div id="team-carousel" class="team-carousel"></div>
+        </div>
+        <div id="team-detail-view" class="team-detail-view" style="display:none"></div>
+        <button class="main-btn" id="team-back-btn" style="margin-top:28px;display:none;">Back</button>
+        <button class="main-btn" onclick="showStep(0)" id="team-exit-btn" style="margin-top:28px;">Back to Booking</button>
+      </div>
+      <!-- END TEAM SECTION -->
+      
+    </div>
+  </div>
+</body>
+</html>
