@@ -1,9 +1,9 @@
 | Contributor   | GitHub                                           |
 | ------------- | ------------------------------------------------ |
-| Hema Sekhar   | [@member1](https://github.com/Mallampalli-Hemasekhar) |
-| Anvesh        | [@member2](https://github.com/potuanvesh)           |
-| Kasi Amarnadh | [@member3](https://github.com/Amarnadh2006)           |
-| Jithendra     | [@member4](https://github.com/jithendra20060808)           |
+| Hema Sekhar   | [Mallampalli-Hemasekhar](https://github.com/Mallampalli-Hemasekhar) |
+| Anvesh        | [potuanvesh](https://github.com/potuanvesh)           |
+| Kasi Amarnadh | [Amarnadh2006](https://github.com/Amarnadh2006)           |
+| Jithendra     | [jithendra20060808](https://github.com/jithendra20060808)           |
 
 
 
